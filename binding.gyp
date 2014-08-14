@@ -51,7 +51,7 @@
                         "./src/nsutil/nsutil_linux_funcs.cpp",
                         "./src/nsutil/nsutil_linux.cpp"
                     ],
-                    "cflags_cc": ["-std=c++11"]
+                    "cflags_cc": ["-std=c++0x"]
                 },
                 {
                     "target_name": "nsutil_posix_linux",
@@ -60,7 +60,7 @@
                         './src/nsutil/nsutil_posix_funcs.cpp',
                         './src/nsutil/nsutil_posix.cpp'
                     ],
-                    "cflags_cc": ["-std=c++11"]
+                    "cflags_cc": ["-std=c++0x"]
                 }
             ]
         }]
