@@ -9,6 +9,10 @@
 #include <sched.h>
 #include <linux/version.h>
 #include <unistd.h>
+#ifndef __kernel_long_t
+typedef long    __kernel_long_t;
+typedef unsigned long   __kernel_ulong_t;
+#endif
 #include <sys/syscall.h>
 #include <sys/sysinfo.h>
 #include <sys/resource.h>
