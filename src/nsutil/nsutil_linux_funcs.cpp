@@ -8,30 +8,30 @@ using namespace std;
 NAN_METHOD(nsutil_pid_exists)
 {
     Nan::HandleScope();
-    if (args.Length() == 0) {
+    if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    if (!args[0]->IsNumber()) {
+    if (!info[0]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
+    int32_t pid = info[0]->Int32Value();
     Nan::ReturnValue(Nan::New<Boolean>(sutil_pid_exists(pid)));
 }
 
 NAN_METHOD(nsutil_proc_ioprio_get) 
 {
     Nan::HandleScope();
-    if (args.Length() == 0) {
+    if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    if (!args[0]->IsNumber()) {
+    if (!info[0]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
+    int32_t pid = info[0]->Int32Value();
     int *proc_ioprio = new int[2];
     if (sutil_proc_ioprio_get(pid, proc_ioprio) == -1) {
         Nan::ReturnValue(Nan::Undefined());
@@ -47,18 +47,18 @@ NAN_METHOD(nsutil_proc_ioprio_get)
 NAN_METHOD(nsutil_proc_ioprio_set) 
 {
     Nan::HandleScope();
-    if (args.Length() != 3) {
+    if (info.Length() != 3) {
         Nan::ThrowTypeError("Wrong number of arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber()) {
+    if (!info[0]->IsNumber() || !info[1]->IsNumber() || !info[2]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
 
-    int32_t pid = args[0]->Int32Value();
-    int io_class = args[1]->IntegerValue();
-    int io_data = args[2]->IntegerValue();
+    int32_t pid = info[0]->Int32Value();
+    int io_class = info[1]->IntegerValue();
+    int io_data = info[2]->IntegerValue();
 
     int re = sutil_proc_ioprio_set(pid, io_class, io_data);
     Nan::ReturnValue(Nan::New<Integer>(re));
@@ -146,15 +146,15 @@ NAN_METHOD(nsutil_sysinfo)
 NAN_METHOD(nsutil_proc_cpu_affinity_get)
 {
     Nan::HandleScope();
-    if (args.Length() == 0) {
+    if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    if (!args[0]->IsNumber()) {
+    if (!info[0]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
+    int32_t pid = info[0]->Int32Value();
     uint32_t mask;
     
     if (sutil_proc_cpu_affinity_get(pid, mask) == -1) {
@@ -172,16 +172,16 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 {
     Nan::HandleScope(;
 
-    if (args.Length() != 2) {
+    if (info.Length() != 2) {
         Nan::ThrowTypeError("Wrong number of arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    if (!args[0]->IsNumber() || !args[1]->IsArray()) {
+    if (!info[0]->IsNumber() || !info[1]->IsArray()) {
         Nan::ThrowTypeError("Wrong arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
 
-    int32_t pid = args[0]->Int32Value();
+    int32_t pid = info[0]->Int32Value();
 
 
     //TODO
@@ -229,15 +229,15 @@ NAN_METHOD(nsutil_users)
 NAN_METHOD(nsutil_sysconf) 
 {
     Nan::HandleScope();
-    if (args.Length() == 0) {
+    if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    if (!args[0]->IsString()) {
+    if (!info[0]->IsString()) {
         Nan::ThrowTypeError("Wrong arguments");
         Nan::ReturnValue(Nan::Undefined());
     }
-    String::Utf8Value str(args[0]->ToString());
+    String::Utf8Value str(info[0]->ToString());
     string which = *str;
     
     int ret = sutil_sysconf(which);
