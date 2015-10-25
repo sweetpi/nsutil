@@ -11,33 +11,33 @@ using v8::String;
 
 void Init(v8::Handle<v8::Object> exports) {
 #if SUTIL_HAVE_IOPRIO
-    exports->Set(NanNew<String>("nsutil_proc_ioprio_get"), 
-            NanNew<FunctionTemplate>(nsutil_proc_ioprio_get)->GetFunction());
-    exports->Set(NanNew<String>("nsutil_proc_ioprio_set"), 
-            NanNew<FunctionTemplate>(nsutil_proc_ioprio_set)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_proc_ioprio_get"), 
+            Nan::New<FunctionTemplate>(nsutil_proc_ioprio_get)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_proc_ioprio_set"), 
+            Nan::New<FunctionTemplate>(nsutil_proc_ioprio_set)->GetFunction());
 #endif
 
-    exports->Set(NanNew<String>("nsutil_disk_partitions"), 
-            NanNew<FunctionTemplate>(nsutil_disk_partitions)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_disk_partitions"), 
+            Nan::New<FunctionTemplate>(nsutil_disk_partitions)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_sysinfo"), 
-            NanNew<FunctionTemplate>(nsutil_sysinfo)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_sysinfo"), 
+            Nan::New<FunctionTemplate>(nsutil_sysinfo)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_proc_cpu_affinity_get"), 
-            NanNew<FunctionTemplate>(nsutil_proc_cpu_affinity_get)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_proc_cpu_affinity_get"), 
+            Nan::New<FunctionTemplate>(nsutil_proc_cpu_affinity_get)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_users"), 
-            NanNew<FunctionTemplate>(nsutil_users)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_users"), 
+            Nan::New<FunctionTemplate>(nsutil_users)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_pid_exists"), 
-            NanNew<FunctionTemplate>(nsutil_pid_exists)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_pid_exists"), 
+            Nan::New<FunctionTemplate>(nsutil_pid_exists)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_sysconf"), 
-            NanNew<FunctionTemplate>(nsutil_sysconf)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_sysconf"), 
+            Nan::New<FunctionTemplate>(nsutil_sysconf)->GetFunction());
 
     /*
-    exports->Set(NanNew<String>("nsutil_"), 
-            NanNew<FunctionTemplate>(nsutil_)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_"), 
+            Nan::New<FunctionTemplate>(nsutil_)->GetFunction());
 
             */
 
