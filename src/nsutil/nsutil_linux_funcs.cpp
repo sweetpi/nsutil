@@ -7,53 +7,53 @@ using namespace std;
 
 NAN_METHOD(nsutil_pid_exists)
 {
-    NanScope();
+    Nan::HandleScope();
     if (args.Length() == 0) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong number of arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     if (!args[0]->IsNumber()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     int32_t pid = args[0]->Int32Value();
-    NanReturnValue(NanNew<Boolean>(sutil_pid_exists(pid)));
+    Nan::ReturnValue(Nan::New<Boolean>(sutil_pid_exists(pid)));
 }
 
 NAN_METHOD(nsutil_proc_ioprio_get) 
 {
-    NanScope();
+    Nan::HandleScope();
     if (args.Length() == 0) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong number of arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     if (!args[0]->IsNumber()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     int32_t pid = args[0]->Int32Value();
     int *proc_ioprio = new int[2];
     if (sutil_proc_ioprio_get(pid, proc_ioprio) == -1) {
-        NanReturnValue(NanUndefined());
+        Nan::ReturnValue(Nan::Undefined());
     }
-    Local<Object> obj = NanNew<Object>();
-    obj->Set(NanNew("class"), NanNew<Integer>(proc_ioprio[0]));
-    obj->Set(NanNew("data"), NanNew<Integer>(proc_ioprio[1]));
+    Local<Object> obj = Nan::New<Object>();
+    obj->Set(Nan::New("class"), Nan::New<Integer>(proc_ioprio[0]));
+    obj->Set(Nan::New("data"), Nan::New<Integer>(proc_ioprio[1]));
 
     delete[] proc_ioprio;
-    NanReturnValue(obj);
+    Nan::ReturnValue(obj);
 }
 
 NAN_METHOD(nsutil_proc_ioprio_set) 
 {
-    NanScope();
+    Nan::HandleScope();
     if (args.Length() != 3) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong number of arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     if (!args[0]->IsNumber() || !args[1]->IsNumber() || !args[2]->IsNumber()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
 
     int32_t pid = args[0]->Int32Value();
@@ -61,7 +61,7 @@ NAN_METHOD(nsutil_proc_ioprio_set)
     int io_data = args[2]->IntegerValue();
 
     int re = sutil_proc_ioprio_set(pid, io_class, io_data);
-    NanReturnValue(NanNew<Integer>(re));
+    Nan::ReturnValue(Nan::New<Integer>(re));
 }
 
 #endif
@@ -72,8 +72,8 @@ NAN_METHOD(nsutil_proc_ioprio_set)
 //XXX: TODO: get set
 NAN_METHOD(nsutil_linux_prlimit) 
 {
-    NanScope();
-    NanReturnValue(NanUndefined());
+    Nan::HandleScope();
+    Nan::ReturnValue(Nan::Undefined());
 }
 
 #endif
@@ -81,87 +81,87 @@ NAN_METHOD(nsutil_linux_prlimit)
 
 NAN_METHOD(nsutil_disk_partitions)
 {
-    NanScope();
+    Nan::HandleScope();
 
     vector<vector<string>> devlist;
 
     if (sutil_disk_partitions(devlist) == -1) {
-        NanReturnValue(NanUndefined());
+        Nan::ReturnValue(Nan::Undefined());
     }
     
-    Local<Array> arr = NanNew<Array>(devlist.size());
+    Local<Array> arr = Nan::New<Array>(devlist.size());
 
     int i = 0;
-    Local<Object> obj = NanNew<Object>();
+    Local<Object> obj = Nan::New<Object>();
     for (auto &dev : devlist) {
-        obj->Set(NanNew("device"),
-                NanNew(dev[0].c_str()));
-        obj->Set(NanNew("mountpoint"),
-                NanNew(dev[1].c_str()));
-        obj->Set(NanNew("fstype"),
-                NanNew(dev[2].c_str()));
-        obj->Set(NanNew("opts"),
-                NanNew(dev[3].c_str()));
+        obj->Set(Nan::New("device"),
+                Nan::New(dev[0].c_str()));
+        obj->Set(Nan::New("mountpoint"),
+                Nan::New(dev[1].c_str()));
+        obj->Set(Nan::New("fstype"),
+                Nan::New(dev[2].c_str()));
+        obj->Set(Nan::New("opts"),
+                Nan::New(dev[3].c_str()));
         arr->Set(i, obj->Clone());
         i++;
     }
 
 
-    NanReturnValue(arr);
+    Nan::ReturnValue(arr);
 }
 
 //int
 //sutil_linux_sysinfo(uint64_t* &info)
 NAN_METHOD(nsutil_sysinfo)
 {
-    NanScope();
+    Nan::HandleScope();
     
     uint64_t* info = new uint64_t[6]; 
 
     if (sutil_linux_sysinfo(info) == -1) {
-        NanReturnValue(NanUndefined());
+        Nan::ReturnValue(Nan::Undefined());
     }
 
-    Local<Object> obj = NanNew<Object>();
+    Local<Object> obj = Nan::New<Object>();
 
-    obj->Set(NanNew("total"), 
-            NanNew<Number>(info[0]));
-    obj->Set(NanNew("free"), 
-            NanNew<Number>(info[1]));
-    obj->Set(NanNew("buffer"), 
-            NanNew<Number>(info[2]));
-    obj->Set(NanNew("shared"), 
-            NanNew<Number>(info[3]));
-    obj->Set(NanNew("swap_total"), 
-            NanNew<Number>(info[4]));
-    obj->Set(NanNew("swap_free"), 
-            NanNew<Number>(info[5]));
+    obj->Set(Nan::New("total"), 
+            Nan::New<Number>(info[0]));
+    obj->Set(Nan::New("free"), 
+            Nan::New<Number>(info[1]));
+    obj->Set(Nan::New("buffer"), 
+            Nan::New<Number>(info[2]));
+    obj->Set(Nan::New("shared"), 
+            Nan::New<Number>(info[3]));
+    obj->Set(Nan::New("swap_total"), 
+            Nan::New<Number>(info[4]));
+    obj->Set(Nan::New("swap_free"), 
+            Nan::New<Number>(info[5]));
 
     delete[] info;
-    NanReturnValue(obj);
+    Nan::ReturnValue(obj);
 }
 
 //int
 //sutil_proc_cpu_affinity_get(const int32_t pid, uint32_t &mask)
 NAN_METHOD(nsutil_proc_cpu_affinity_get)
 {
-    NanScope();
+    Nan::HandleScope();
     if (args.Length() == 0) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong number of arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     if (!args[0]->IsNumber()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     int32_t pid = args[0]->Int32Value();
     uint32_t mask;
     
     if (sutil_proc_cpu_affinity_get(pid, mask) == -1) {
-        NanReturnValue(NanUndefined());
+        Nan::ReturnValue(Nan::Undefined());
     }
 
-    NanReturnValue(NanNew<Number>(mask));
+    Nan::ReturnValue(Nan::New<Number>(mask));
 }
 
 //XXX
@@ -170,15 +170,15 @@ NAN_METHOD(nsutil_proc_cpu_affinity_get)
 /*
 NAN_METHOD(nsutil_proc_cpu_affinity_set) 
 {
-    NanScope(;
+    Nan::HandleScope(;
 
     if (args.Length() != 2) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong number of arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     if (!args[0]->IsNumber() || !args[1]->IsArray()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
 
     int32_t pid = args[0]->Int32Value();
@@ -186,7 +186,7 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 
     //TODO
 
-    NanReturnValue(NanUndefined());
+    Nan::ReturnValue(Nan::Undefined());
 
 }
 */
@@ -198,29 +198,29 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 //sutil_users(vector<sutil_user_info> &user_list)
 NAN_METHOD(nsutil_users)
 {
-    NanScope();
+    Nan::HandleScope();
 
     vector<sutil_user_info> user_list;
 
     if (sutil_users(user_list) == -1) {
-        NanReturnValue(NanUndefined());
+        Nan::ReturnValue(Nan::Undefined());
     }
     
-    Local<Array> arr = NanNew<Array>(user_list.size());
-    Local<Object> obj = NanNew<Object>();
+    Local<Array> arr = Nan::New<Array>(user_list.size());
+    Local<Object> obj = Nan::New<Object>();
 
     int i = 0;
     for (auto &u : user_list) {
-        obj->Set(NanNew("username"), NanNew(u.username.c_str()));
-        obj->Set(NanNew("tty"), NanNew(u.tty.c_str()));
-        obj->Set(NanNew("host"), NanNew(u.host.c_str()));
-        obj->Set(NanNew("start_time"), NanNew<Number>(u.start_time));
-        obj->Set(NanNew("user_proc"), NanNew<Boolean>(u.user_proc));
+        obj->Set(Nan::New("username"), Nan::New(u.username.c_str()));
+        obj->Set(Nan::New("tty"), Nan::New(u.tty.c_str()));
+        obj->Set(Nan::New("host"), Nan::New(u.host.c_str()));
+        obj->Set(Nan::New("start_time"), Nan::New<Number>(u.start_time));
+        obj->Set(Nan::New("user_proc"), Nan::New<Boolean>(u.user_proc));
         arr->Set(i, obj->Clone());
         i++;
     }
 
-    NanReturnValue(arr);
+    Nan::ReturnValue(arr);
 }
 
 
@@ -228,20 +228,20 @@ NAN_METHOD(nsutil_users)
 // sysconf
 NAN_METHOD(nsutil_sysconf) 
 {
-    NanScope();
+    Nan::HandleScope();
     if (args.Length() == 0) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong number of arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     if (!args[0]->IsString()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+        Nan::ThrowTypeError("Wrong arguments");
+        Nan::ReturnValue(Nan::Undefined());
     }
     String::Utf8Value str(args[0]->ToString());
     string which = *str;
     
     int ret = sutil_sysconf(which);
-    NanReturnValue(NanNew<Number>(ret));
+    Nan::ReturnValue(Nan::New<Number>(ret));
 }
 
 
