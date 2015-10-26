@@ -37,23 +37,23 @@ NAN_METHOD(nsutil_proc_ioprio_get)
         info.GetReturnValue().Set(Nan::Undefined());
     }
     Local<Object> obj = Nan::New<Object>();
-    obj->Set(Nan::New("class"), Nan::New<Integer>(proc_ioprio[0]));
-    obj->Set(Nan::New("data"), Nan::New<Integer>(proc_ioprio[1]));
+    obj->Set(Nan::New("class").ToLocalChecked(), Nan::New<Integer>(proc_ioprio[0]));
+    obj->Set(Nan::New("data").ToLocalChecked(), Nan::New<Integer>(proc_ioprio[1]));
 
     delete[] proc_ioprio;
-    Nan::ReturnValue(obj);
+    info.GetReturnValue().Set(obj);
 }
 
 NAN_METHOD(nsutil_proc_ioprio_set) 
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
     if (info.Length() != 3) {
         Nan::ThrowTypeError("Wrong number of arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     if (!info[0]->IsNumber() || !info[1]->IsNumber() || !info[2]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
 
     int32_t pid = info[0]->Int32Value();
@@ -61,7 +61,7 @@ NAN_METHOD(nsutil_proc_ioprio_set)
     int io_data = info[2]->IntegerValue();
 
     int re = sutil_proc_ioprio_set(pid, io_class, io_data);
-    Nan::ReturnValue(Nan::New<Integer>(re));
+    info.GetReturnValue().Set(Nan::New<Integer>(re));
 }
 
 #endif
