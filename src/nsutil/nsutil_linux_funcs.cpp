@@ -174,11 +174,11 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 
     if (info.Length() != 2) {
         Nan::ThrowTypeError("Wrong number of arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     if (!info[0]->IsNumber() || !info[1]->IsArray()) {
         Nan::ThrowTypeError("Wrong arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
 
     int32_t pid = info[0]->Int32Value();
@@ -186,7 +186,7 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 
     //TODO
 
-    Nan::ReturnValue(Nan::Undefined());
+    info.GetReturnValue().Set(Nan::Undefined());
 
 }
 */
@@ -198,12 +198,12 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 //sutil_users(vector<sutil_user_info> &user_list)
 NAN_METHOD(nsutil_users)
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
 
     vector<sutil_user_info> user_list;
 
     if (sutil_users(user_list) == -1) {
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     
     Local<Array> arr = Nan::New<Array>(user_list.size());
@@ -211,16 +211,16 @@ NAN_METHOD(nsutil_users)
 
     int i = 0;
     for (auto &u : user_list) {
-        obj->Set(Nan::New("username"), Nan::New(u.username.c_str()));
-        obj->Set(Nan::New("tty"), Nan::New(u.tty.c_str()));
-        obj->Set(Nan::New("host"), Nan::New(u.host.c_str()));
-        obj->Set(Nan::New("start_time"), Nan::New<Number>(u.start_time));
-        obj->Set(Nan::New("user_proc"), Nan::New<Boolean>(u.user_proc));
+        obj->Set(Nan::New("username").ToLocalChecked(), Nan::New(u.username.c_str().ToLocalChecked()));
+        obj->Set(Nan::New("tty").ToLocalChecked(), Nan::New(u.tty.c_str().ToLocalChecked()));
+        obj->Set(Nan::New("host").ToLocalChecked(), Nan::New(u.host.c_str().ToLocalChecked()));
+        obj->Set(Nan::New("start_time").ToLocalChecked(), Nan::New<Number>(u.start_time));
+        obj->Set(Nan::New("user_proc").ToLocalChecked(), Nan::New<Boolean>(u.user_proc));
         arr->Set(i, obj->Clone());
         i++;
     }
 
-    Nan::ReturnValue(arr);
+    info.GetReturnValue().Set(arr);
 }
 
 
@@ -228,20 +228,20 @@ NAN_METHOD(nsutil_users)
 // sysconf
 NAN_METHOD(nsutil_sysconf) 
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     if (!info[0]->IsString()) {
         Nan::ThrowTypeError("Wrong arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     String::Utf8Value str(info[0]->ToString());
     string which = *str;
     
     int ret = sutil_sysconf(which);
-    Nan::ReturnValue(Nan::New<Number>(ret));
+    info.GetReturnValue().Set(Nan::New<Number>(ret));
 }
 
 
