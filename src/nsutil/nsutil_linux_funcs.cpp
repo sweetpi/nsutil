@@ -145,23 +145,23 @@ NAN_METHOD(nsutil_sysinfo)
 //sutil_proc_cpu_affinity_get(const int32_t pid, uint32_t &mask)
 NAN_METHOD(nsutil_proc_cpu_affinity_get)
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     if (!info[0]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     int32_t pid = info[0]->Int32Value();
     uint32_t mask;
     
     if (sutil_proc_cpu_affinity_get(pid, mask) == -1) {
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
 
-    Nan::ReturnValue(Nan::New<Number>(mask));
+    info.GetReturnValue().Set(Nan::New<Number>(mask));
 }
 
 //XXX
