@@ -9,14 +9,14 @@ using v8::FunctionTemplate;
 using v8::String;
 
 void Init(v8::Handle<v8::Object> exports) {
-    exports->Set(NanNew<String>("nsutil_posix_getpriority_sync"), 
-            NanNew<FunctionTemplate>(nsutil_posix_getpriority_sync)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_posix_getpriority_sync").ToLocalChecked(), 
+            Nan::New<FunctionTemplate>(nsutil_posix_getpriority_sync)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_posix_setpriority_sync"), 
-            NanNew<FunctionTemplate>(nsutil_posix_setpriority_sync)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_posix_setpriority_sync").ToLocalChecked(), 
+            Nan::New<FunctionTemplate>(nsutil_posix_setpriority_sync)->GetFunction());
 
-    exports->Set(NanNew<String>("nsutil_posix_statvfs"),
-            NanNew<FunctionTemplate>(nsutil_posix_statvfs)->GetFunction());
+    exports->Set(Nan::New<String>("nsutil_posix_statvfs").ToLocalChecked(),
+            Nan::New<FunctionTemplate>(nsutil_posix_statvfs)->GetFunction());
 }
 
 
