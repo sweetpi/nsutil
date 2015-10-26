@@ -211,9 +211,9 @@ NAN_METHOD(nsutil_users)
 
     int i = 0;
     for (auto &u : user_list) {
-        obj->Set(Nan::New("username").ToLocalChecked(), Nan::New(u.username.c_str().ToLocalChecked()));
-        obj->Set(Nan::New("tty").ToLocalChecked(), Nan::New(u.tty.c_str().ToLocalChecked()));
-        obj->Set(Nan::New("host").ToLocalChecked(), Nan::New(u.host.c_str().ToLocalChecked()));
+        obj->Set(Nan::New("username").ToLocalChecked(), Nan::New(u.username.c_str()).ToLocalChecked());
+        obj->Set(Nan::New("tty").ToLocalChecked(), Nan::New(u.tty.c_str()).ToLocalChecked());
+        obj->Set(Nan::New("host").ToLocalChecked(), Nan::New(u.host.c_str()).ToLocalChecked());
         obj->Set(Nan::New("start_time").ToLocalChecked(), Nan::New<Number>(u.start_time));
         obj->Set(Nan::New("user_proc").ToLocalChecked(), Nan::New<Boolean>(u.user_proc));
         arr->Set(i, obj->Clone());
