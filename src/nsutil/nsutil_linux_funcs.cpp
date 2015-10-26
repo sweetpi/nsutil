@@ -72,8 +72,8 @@ NAN_METHOD(nsutil_proc_ioprio_set)
 //XXX: TODO: get set
 NAN_METHOD(nsutil_linux_prlimit) 
 {
-    Nan::HandleScope();
-    Nan::ReturnValue(Nan::Undefined());
+    Nan::HandleScope() scope;
+    info.GetReturnValue().Set(Nan::Undefined());
 }
 
 #endif
@@ -81,12 +81,12 @@ NAN_METHOD(nsutil_linux_prlimit)
 
 NAN_METHOD(nsutil_disk_partitions)
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
 
     vector<vector<string>> devlist;
 
     if (sutil_disk_partitions(devlist) == -1) {
-        Nan::ReturnValue(Nan::Undefined());
+        Ninfo.GetReturnValue().Set(Nan::Undefined());
     }
     
     Local<Array> arr = Nan::New<Array>(devlist.size());
@@ -94,51 +94,51 @@ NAN_METHOD(nsutil_disk_partitions)
     int i = 0;
     Local<Object> obj = Nan::New<Object>();
     for (auto &dev : devlist) {
-        obj->Set(Nan::New("device"),
-                Nan::New(dev[0].c_str()));
-        obj->Set(Nan::New("mountpoint"),
-                Nan::New(dev[1].c_str()));
-        obj->Set(Nan::New("fstype"),
-                Nan::New(dev[2].c_str()));
-        obj->Set(Nan::New("opts"),
-                Nan::New(dev[3].c_str()));
+        obj->Set(Nan::New("device").ToLocalChecked(),
+                Nan::New(dev[0].c_str().ToLocalChecked()));
+        obj->Set(Nan::New("mountpoint").ToLocalChecked(),
+                Nan::New(dev[1].c_str().ToLocalChecked()));
+        obj->Set(Nan::New("fstype").ToLocalChecked(),
+                Nan::New(dev[2].c_str().ToLocalChecked()));
+        obj->Set(Nan::New("opts").ToLocalChecked(),
+                Nan::New(dev[3].c_str().ToLocalChecked()));
         arr->Set(i, obj->Clone());
         i++;
     }
 
 
-    Nan::ReturnValue(arr);
+    info.GetReturnValue().Set(arr);
 }
 
 //int
 //sutil_linux_sysinfo(uint64_t* &info)
 NAN_METHOD(nsutil_sysinfo)
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
     
     uint64_t* info = new uint64_t[6]; 
 
     if (sutil_linux_sysinfo(info) == -1) {
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
 
     Local<Object> obj = Nan::New<Object>();
 
-    obj->Set(Nan::New("total"), 
+    obj->Set(Nan::New("total").ToLocalChecked(), 
             Nan::New<Number>(info[0]));
-    obj->Set(Nan::New("free"), 
+    obj->Set(Nan::New("free").ToLocalChecked(), 
             Nan::New<Number>(info[1]));
-    obj->Set(Nan::New("buffer"), 
+    obj->Set(Nan::New("buffer").ToLocalChecked(), 
             Nan::New<Number>(info[2]));
-    obj->Set(Nan::New("shared"), 
+    obj->Set(Nan::New("shared").ToLocalChecked(), 
             Nan::New<Number>(info[3]));
-    obj->Set(Nan::New("swap_total"), 
+    obj->Set(Nan::New("swap_total").ToLocalChecked(), 
             Nan::New<Number>(info[4]));
-    obj->Set(Nan::New("swap_free"), 
+    obj->Set(Nan::New("swap_free").ToLocalChecked(), 
             Nan::New<Number>(info[5]));
 
     delete[] info;
-    Nan::ReturnValue(obj);
+    info.GetReturnValue().Set(obj);
 }
 
 //int
