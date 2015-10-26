@@ -7,7 +7,7 @@ using namespace std;
 
 NAN_METHOD(nsutil_pid_exists)
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         info.GetReturnValue().Set(Nan::Undefined());
@@ -22,7 +22,7 @@ NAN_METHOD(nsutil_pid_exists)
 
 NAN_METHOD(nsutil_proc_ioprio_get) 
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         info.GetReturnValue().Set(Nan::Undefined());
@@ -46,7 +46,7 @@ NAN_METHOD(nsutil_proc_ioprio_get)
 
 NAN_METHOD(nsutil_proc_ioprio_set) 
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     if (info.Length() != 3) {
         Nan::ThrowTypeError("Wrong number of arguments");
         info.GetReturnValue().Set(Nan::Undefined());
@@ -72,7 +72,7 @@ NAN_METHOD(nsutil_proc_ioprio_set)
 //XXX: TODO: get set
 NAN_METHOD(nsutil_linux_prlimit) 
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     info.GetReturnValue().Set(Nan::Undefined());
 }
 
@@ -81,7 +81,7 @@ NAN_METHOD(nsutil_linux_prlimit)
 
 NAN_METHOD(nsutil_disk_partitions)
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
 
     vector<vector<string>> devlist;
 
@@ -114,7 +114,7 @@ NAN_METHOD(nsutil_disk_partitions)
 //sutil_linux_sysinfo(uint64_t* &info)
 NAN_METHOD(nsutil_sysinfo)
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     
     uint64_t* info = new uint64_t[6]; 
 
@@ -145,7 +145,7 @@ NAN_METHOD(nsutil_sysinfo)
 //sutil_proc_cpu_affinity_get(const int32_t pid, uint32_t &mask)
 NAN_METHOD(nsutil_proc_cpu_affinity_get)
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         info.GetReturnValue().Set(Nan::Undefined());
@@ -198,7 +198,7 @@ NAN_METHOD(nsutil_proc_cpu_affinity_set)
 //sutil_users(vector<sutil_user_info> &user_list)
 NAN_METHOD(nsutil_users)
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
 
     vector<sutil_user_info> user_list;
 
@@ -228,7 +228,7 @@ NAN_METHOD(nsutil_users)
 // sysconf
 NAN_METHOD(nsutil_sysconf) 
 {
-    Nan::HandleScope() scope;
+    Nan::HandleScope scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
         info.GetReturnValue().Set(Nan::Undefined());
