@@ -65,7 +65,7 @@ NAN_METHOD(nsutil_posix_statvfs)
     Local<Object> obj = Nan::New<Object>();
     obj->Set(Nan::New("bsize").ToLocalChecked(), 
             Nan::New<Number>(buffer.f_bsize));
-    obj->Set(Nan::New("frsize"), 
+    obj->Set(Nan::New("frsize").ToLocalChecked(), 
             Nan::New<Number>(buffer.f_frsize));
     obj->Set(Nan::New("blocks").ToLocalChecked(), 
             Nan::New<Number>(buffer.f_blocks));
