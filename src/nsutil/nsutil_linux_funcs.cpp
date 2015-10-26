@@ -116,28 +116,28 @@ NAN_METHOD(nsutil_sysinfo)
 {
     Nan::HandleScope scope;
     
-    uint64_t* info = new uint64_t[6]; 
+    uint64_t* sysinfo = new uint64_t[6]; 
 
-    if (sutil_linux_sysinfo(info) == -1) {
+    if (sutil_linux_sysinfo(sysinfo) == -1) {
         info.GetReturnValue().Set(Nan::Undefined());
     }
 
     Local<Object> obj = Nan::New<Object>();
 
     obj->Set(Nan::New("total").ToLocalChecked(), 
-            Nan::New<Number>(info[0]));
+            Nan::New<Number>(sysinfo[0]));
     obj->Set(Nan::New("free").ToLocalChecked(), 
-            Nan::New<Number>(info[1]));
+            Nan::New<Number>(sysinfo[1]));
     obj->Set(Nan::New("buffer").ToLocalChecked(), 
-            Nan::New<Number>(info[2]));
+            Nan::New<Number>(sysinfo[2]));
     obj->Set(Nan::New("shared").ToLocalChecked(), 
-            Nan::New<Number>(info[3]));
+            Nan::New<Number>(sysinfo[3]));
     obj->Set(Nan::New("swap_total").ToLocalChecked(), 
-            Nan::New<Number>(info[4]));
+            Nan::New<Number>(sysinfo[4]));
     obj->Set(Nan::New("swap_free").ToLocalChecked(), 
-            Nan::New<Number>(info[5]));
+            Nan::New<Number>(sysinfo[5]));
 
-    delete[] info;
+    delete[] sysinfo;
     info.GetReturnValue().Set(obj);
 }
 
