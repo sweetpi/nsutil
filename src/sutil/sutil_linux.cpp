@@ -75,7 +75,7 @@ sutil_proc_ioprio_set(const int32_t &pid, const int &ioclass, const int &iodata)
 /*
  * A wrapper around prlimit(2); sets process resource limits.
  * This can be used for both get and set, in which case extra
- * 'soft' and 'hard' args must be provided.
+ * 'soft' and 'hard' info must be provided.
  */
 int
 sutil_linux_prlimit(const pid_t &pid, 
