@@ -95,13 +95,13 @@ NAN_METHOD(nsutil_disk_partitions)
     Local<Object> obj = Nan::New<Object>();
     for (auto &dev : devlist) {
         obj->Set(Nan::New("device").ToLocalChecked(),
-                Nan::New(dev[0].c_str().ToLocalChecked()));
+                Nan::New(dev[0].c_str()).ToLocalChecked());
         obj->Set(Nan::New("mountpoint").ToLocalChecked(),
-                Nan::New(dev[1].c_str().ToLocalChecked()));
+                Nan::New(dev[1].c_str()).ToLocalChecked());
         obj->Set(Nan::New("fstype").ToLocalChecked(),
-                Nan::New(dev[2].c_str().ToLocalChecked()));
+                Nan::New(dev[2].c_str()).ToLocalChecked());
         obj->Set(Nan::New("opts").ToLocalChecked(),
-                Nan::New(dev[3].c_str().ToLocalChecked()));
+                Nan::New(dev[3].c_str()).ToLocalChecked());
         arr->Set(i, obj->Clone());
         i++;
     }
