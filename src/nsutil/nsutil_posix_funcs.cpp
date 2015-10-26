@@ -6,84 +6,84 @@ using namespace v8;
 // handle sutil_posix
 NAN_METHOD(nsutil_posix_getpriority_sync)
 {
-    NanScope();
-    if (args.Length() == 0) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+    Nan::HandleScope scope;
+    if (info.Length() == 0) {
+        Nan::ThrowTypeError("Wrong number of arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    if (!args[0]->IsNumber()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+    if (!info[0]->IsNumber()) {
+        Nan::ThrowTypeError("Wrong arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
+    int32_t pid = info[0]->Int32Value();
     int priority;
     if(sutil_posix_getpriority(pid, priority) == -1) {
-        NanReturnValue(NanUndefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
 
-    NanReturnValue(NanNew<Number>(priority));
+    info.GetReturnValue().Set(Nan::New<Number>(priority));
 }
 
 NAN_METHOD(nsutil_posix_setpriority_sync)
 {
-    NanScope();
-    if (args.Length() != 2) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+    Nan::HandleScope scope;
+    if (info.Length() != 2) {
+        Nan::ThrowTypeError("Wrong number of arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+    if (!info[0]->IsNumber() || !info[1]->IsNumber()) {
+        Nan::ThrowTypeError("Wrong arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
-    int priority = args[0]->IntegerValue();
+    int32_t pid = info[0]->Int32Value();
+    int priority = info[0]->IntegerValue();
     if(sutil_posix_setpriority(pid, priority) == -1) {
-        NanThrowTypeError("SetPriority Error");
+        Nan::ThrowTypeError("SetPriority Error");
     }
 
-    NanReturnValue(NanUndefined());
+    info.GetReturnValue().Set(Nan::Undefined());
 }
 
 NAN_METHOD(nsutil_posix_statvfs)
 {
-    NanScope();
-    if (args.Length() != 1) {
-        NanThrowTypeError("Wrong number of arguments");
-        NanReturnValue(NanUndefined());
+    Nan::HandleScope scope;
+    if (info.Length() != 1) {
+        Nan::ThrowTypeError("Wrong number of arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    if (!args[0]->IsString()) {
-        NanThrowTypeError("Wrong arguments");
-        NanReturnValue(NanUndefined());
+    if (!info[0]->IsString()) {
+        Nan::ThrowTypeError("Wrong arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    String::Utf8Value str(args[0]->ToString());
+    String::Utf8Value str(info[0]->ToString());
     char const *path = *str;
     struct statvfs buffer;
     int status = sutil_posix_statvfs(path, buffer);
     if (status) {
-        NanReturnValue(NanUndefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    Local<Object> obj = NanNew<Object>();
-    obj->Set(NanNew("bsize"), 
-            NanNew<Number>(buffer.f_bsize));
-    obj->Set(NanNew("frsize"), 
-            NanNew<Number>(buffer.f_frsize));
-    obj->Set(NanNew("blocks"), 
-            NanNew<Number>(buffer.f_blocks));
-    obj->Set(NanNew("bfree"), 
-            NanNew<Number>(buffer.f_bfree));
-    obj->Set(NanNew("bavail"), 
-            NanNew<Number>(buffer.f_bavail));
-    obj->Set(NanNew("files"), 
-            NanNew<Number>(buffer.f_files));
-    obj->Set(NanNew("ffree"), 
-            NanNew<Number>(buffer.f_ffree));
-    obj->Set(NanNew("favail"), 
-            NanNew<Number>(buffer.f_favail));
-    obj->Set(NanNew("flag"), 
-            NanNew<Number>(buffer.f_flag));
-    obj->Set(NanNew("namemax"), 
-            NanNew<Number>(buffer.f_namemax));
-    NanReturnValue(obj);
+    Local<Object> obj = Nan::New<Object>();
+    obj->Set(Nan::New("bsize").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_bsize));
+    obj->Set(Nan::New("frsize"), 
+            Nan::New<Number>(buffer.f_frsize));
+    obj->Set(Nan::New("blocks").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_blocks));
+    obj->Set(Nan::New("bfree").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_bfree));
+    obj->Set(Nan::New("bavail").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_bavail));
+    obj->Set(Nan::New("files").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_files));
+    obj->Set(Nan::New("ffree").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_ffree));
+    obj->Set(Nan::New("favail").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_favail));
+    obj->Set(Nan::New("flag").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_flag));
+    obj->Set(Nan::New("namemax").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_namemax));
+    info.GetReturnValue().Set(obj);
 }
 
 
