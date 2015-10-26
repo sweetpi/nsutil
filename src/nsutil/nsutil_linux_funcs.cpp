@@ -7,34 +7,34 @@ using namespace std;
 
 NAN_METHOD(nsutil_pid_exists)
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     if (!info[0]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     int32_t pid = info[0]->Int32Value();
-    Nan::ReturnValue(Nan::New<Boolean>(sutil_pid_exists(pid)));
+    info.GetReturnValue().Set(Nan::New<Boolean>(sutil_pid_exists(pid)));
 }
 
 NAN_METHOD(nsutil_proc_ioprio_get) 
 {
-    Nan::HandleScope();
+    Nan::HandleScope() scope;
     if (info.Length() == 0) {
         Nan::ThrowTypeError("Wrong number of arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     if (!info[0]->IsNumber()) {
         Nan::ThrowTypeError("Wrong arguments");
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     int32_t pid = info[0]->Int32Value();
     int *proc_ioprio = new int[2];
     if (sutil_proc_ioprio_get(pid, proc_ioprio) == -1) {
-        Nan::ReturnValue(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     Local<Object> obj = Nan::New<Object>();
     obj->Set(Nan::New("class"), Nan::New<Integer>(proc_ioprio[0]));
