@@ -86,7 +86,7 @@ NAN_METHOD(nsutil_disk_partitions)
     vector<vector<string>> devlist;
 
     if (sutil_disk_partitions(devlist) == -1) {
-        Ninfo.GetReturnValue().Set(Nan::Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
     
     Local<Array> arr = Nan::New<Array>(devlist.size());
