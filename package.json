@@ -10,29 +10,30 @@
     "io",
     "net"
   ],
-  "version": "0.1.3",
-  "author": "Dx.Yang <x6doooo@gmail.com>",
+  "version": "0.1.4",
+  "author": "Takanobu Fuse <ficus.online.store@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "http://github.com/x6doooo/nsutil.git"
+    "url": "http://github.com/capitalfuse/nsutil.git"
   },
   "bugs": {
-    "url": "http://github.com/x6doooo/nsutil/issues"
+    "url": "http://github.com/capitalfuse/nsutil/issues"
   },
   "dependencies": {
-    "mocha": "*"
+    "nan": ">=2.1.X"
   },
   "devDependencies": {
+    "mocha": "*"
   },
   "license": [
     {
-      "type" : "BSD",
-      "url" : "https://github.com/x6doooo/nsutil/raw/master/LICENSE"
+      "type": "BSD",
+      "url": "https://github.com/capitalfuse/nsutil/raw/master/LICENSE"
     }
   ],
   "engines": [
-    "node >= 0.8.0"
+    "node >= 4.1.2"
   ],
   "main": "./lib/nsutil.js",
-  "homepage": "https://github.com/x6doooo/nsutil"
+  "homepage": "https://github.com/capitalfuse/nsutil"
 }

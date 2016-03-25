@@ -4,89 +4,86 @@ using namespace std;
 using namespace v8;
 
 // handle sutil_posix
-Handle<Value>
-nsutil_posix_getpriority_sync(const Arguments &args)
+NAN_METHOD(nsutil_posix_getpriority_sync)
 {
-    HandleScope scope;
-    if (args.Length() == 0) {
-        ThrowException(Exception::TypeError(String::New("Wrong number of arguments")));
-        return scope.Close(Undefined());
+    Nan::HandleScope scope;
+    if (info.Length() == 0) {
+        Nan::ThrowTypeError("Wrong number of arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    if (!args[0]->IsNumber()) {
-        ThrowException(Exception::TypeError(String::New("Wrong arguments")));
-        return scope.Close(Undefined());
+    if (!info[0]->IsNumber()) {
+        Nan::ThrowTypeError("Wrong arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
+    int32_t pid = info[0]->Int32Value();
     int priority;
     if(sutil_posix_getpriority(pid, priority) == -1) {
-        return scope.Close(Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
 
-    return scope.Close(Number::New(priority));
+    info.GetReturnValue().Set(Nan::New<Number>(priority));
 }
 
-Handle<Value>
-nsutil_posix_setpriority_sync(const Arguments &args)
+NAN_METHOD(nsutil_posix_setpriority_sync)
 {
-    HandleScope scope;
-    if (args.Length() != 2) {
-        ThrowException(Exception::TypeError(String::New("Wrong number of arguments")));
-        return scope.Close(Undefined());
+    Nan::HandleScope scope;
+    if (info.Length() != 2) {
+        Nan::ThrowTypeError("Wrong number of arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
-        ThrowException(Exception::TypeError(String::New("Wrong arguments")));
-        return scope.Close(Undefined());
+    if (!info[0]->IsNumber() || !info[1]->IsNumber()) {
+        Nan::ThrowTypeError("Wrong arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    int32_t pid = args[0]->Int32Value();
-    int priority = args[0]->IntegerValue();
+    int32_t pid = info[0]->Int32Value();
+    int priority = info[0]->IntegerValue();
     if(sutil_posix_setpriority(pid, priority) == -1) {
-        ThrowException(Exception::TypeError(String::New("SetPriority Error")));
+        Nan::ThrowTypeError("SetPriority Error");
     }
 
-    return scope.Close(Undefined());
+    info.GetReturnValue().Set(Nan::Undefined());
 }
 
-Handle<Value>
-nsutil_posix_statvfs(const Arguments &args)
+NAN_METHOD(nsutil_posix_statvfs)
 {
-    HandleScope scope;
-    if (args.Length() != 1) {
-        ThrowException(Exception::TypeError(String::New("Wrong number of arguments")));
-        return scope.Close(Undefined());
+    Nan::HandleScope scope;
+    if (info.Length() != 1) {
+        Nan::ThrowTypeError("Wrong number of arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    if (!args[0]->IsString()) {
-        ThrowException(Exception::TypeError(String::New("Wrong arguments")));
-        return scope.Close(Undefined());
+    if (!info[0]->IsString()) {
+        Nan::ThrowTypeError("Wrong arguments");
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    String::Utf8Value str(args[0]->ToString());
+    String::Utf8Value str(info[0]->ToString());
     char const *path = *str;
     struct statvfs buffer;
     int status = sutil_posix_statvfs(path, buffer);
     if (status) {
-        return scope.Close(Undefined());
+        info.GetReturnValue().Set(Nan::Undefined());
     }
-    Local<Object> obj = Object::New();
-    obj->Set(String::NewSymbol("bsize"), 
-            Number::New(buffer.f_bsize));
-    obj->Set(String::NewSymbol("frsize"), 
-            Number::New(buffer.f_frsize));
-    obj->Set(String::NewSymbol("blocks"), 
-            Number::New(buffer.f_blocks));
-    obj->Set(String::NewSymbol("bfree"), 
-            Number::New(buffer.f_bfree));
-    obj->Set(String::NewSymbol("bavail"), 
-            Number::New(buffer.f_bavail));
-    obj->Set(String::NewSymbol("files"), 
-            Number::New(buffer.f_files));
-    obj->Set(String::NewSymbol("ffree"), 
-            Number::New(buffer.f_ffree));
-    obj->Set(String::NewSymbol("favail"), 
-            Number::New(buffer.f_favail));
-    obj->Set(String::NewSymbol("flag"), 
-            Number::New(buffer.f_flag));
-    obj->Set(String::NewSymbol("namemax"), 
-            Number::New(buffer.f_namemax));
-    return scope.Close(obj);
+    Local<Object> obj = Nan::New<Object>();
+    obj->Set(Nan::New("bsize").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_bsize));
+    obj->Set(Nan::New("frsize").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_frsize));
+    obj->Set(Nan::New("blocks").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_blocks));
+    obj->Set(Nan::New("bfree").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_bfree));
+    obj->Set(Nan::New("bavail").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_bavail));
+    obj->Set(Nan::New("files").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_files));
+    obj->Set(Nan::New("ffree").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_ffree));
+    obj->Set(Nan::New("favail").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_favail));
+    obj->Set(Nan::New("flag").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_flag));
+    obj->Set(Nan::New("namemax").ToLocalChecked(), 
+            Nan::New<Number>(buffer.f_namemax));
+    info.GetReturnValue().Set(obj);
 }
 
 
